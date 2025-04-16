@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://raw.githubusercontent.com/YZUCAM/employee_management_system/main/docsrc/example.png"><br><br>
+<img src="https://raw.githubusercontent.com/YZUCAM/employee_management_system/master/docsrc/example.png"><br><br>
 </div>
 
 
