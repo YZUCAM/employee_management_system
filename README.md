@@ -3,6 +3,6 @@
 </div>
 
 
-# small practice project for c++
+# Small Project for practice c++
 
-## toy example of a employee management system
+## Toy example of an employee management system
