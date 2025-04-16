@@ -28,6 +28,13 @@ public:
     void save();
     int get_empNum();
     void init_emp();
+    void show_emp();
+    void del_emp();
+    int isExist(int id);
+    void update_emp();
+    void find_emp();
+    void sort_emp();
+    void clear_emp();
 
     ~WorkerManager();
 };

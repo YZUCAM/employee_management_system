@@ -40,16 +40,22 @@ int main(){
                 wm.add_Emp();
                 break;
             case 2:     // list employee
+                wm.show_emp();
                 break;
             case 3:     // search Employee
+                wm.find_emp();
                 break;
             case 4:     // remove Employee
+                wm.del_emp();
                 break;
             case 5:     // update Employee Info
+                wm.update_emp();
                 break;
             case 6:     // sort Employee
+                wm.sort_emp();
                 break;
-            case 7:     // c lear Employee
+            case 7:     // clear Employee
+                wm.clear_emp();
                 break;
             default:
                 system("clear");

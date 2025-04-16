@@ -10,8 +10,8 @@ Manager::Manager(int id, string name, int depId)
 void Manager::showInfo()
 {
     cout << "Employee ID: " << this->m_ID
-        << "\t Employee Name: " << this->m_Name
-        << "\t Department: " << this->getDeptName() << endl; 
+        << " \t Employee Name: " << this->m_Name
+        << " \t Department: " << this->getDeptName() << endl; 
 }
 
 

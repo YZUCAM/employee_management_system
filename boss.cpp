@@ -10,8 +10,8 @@ Boss::Boss(int id, string name, int depId)
 void Boss::showInfo()
 {
     cout << "Employee ID: " << this->m_ID
-        << "\t Employee Name: " << this->m_Name
-        << "\t Department: " << this->getDeptName() << endl; 
+        << " \t Employee Name: " << this->m_Name
+        << " \t Department: " << this->getDeptName() << endl; 
 }
 
 

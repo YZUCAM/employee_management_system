@@ -202,10 +202,301 @@ void WorkerManager::init_emp()
     ifs.close();
 }
 
+void WorkerManager::show_emp()
+{
+    //check file if empty
+    if (this->m_FileIsEmpty)
+    {
+        cout << "No employee records." << endl; 
+    } 
+    else
+    {
+        for (int i = 0; i < this->m_empNum; i++)
+        {
+            // use polymorphism of each type of employee
+            this->m_pptrArray[i]->showInfo();
+        }
+    }   
+    cout << "Press Enter to continue" << endl;
+    cin.ignore(1, '\n');
+    cin.get();
+    system("clear");    
+}
+
+int WorkerManager::isExist(int id)
+{
+    int idx = -1;
+    for (int i=0; i<this->m_empNum; i++)
+    {
+        if (this->m_pptrArray[i]->m_ID == id)
+        {
+            idx = i;
+            break;
+        }
+    }
+    return idx;
+}
+
+void WorkerManager::del_emp()
+{
+    if (this->m_FileIsEmpty)
+    {
+        cout << "No records exist." << endl;
+    }
+    else
+    {
+        int id = 0;
+        cout << "Please enter the employee ID to delete: " << endl;
+        cin >> id;
+
+        int idx = this->isExist(id);
+        if (idx != -1)
+        {
+            // logical delete, data move backwards
+            for (int i = idx; i < this->m_empNum-1; i++)
+            {
+                this->m_pptrArray[i] = this->m_pptrArray[i+1];
+            }
+            this->m_empNum--;
+            this->save();
+            cout << "Delete success." << endl;
+        } 
+        else
+        {
+            cout << "Delete failed, the employee is not found." << endl;
+        }
+    }
+    cout << "Press Enter to continue" << endl;
+    cin.ignore(1, '\n');
+    cin.get();
+    system("clear");   
+}
+
+void WorkerManager::update_emp()
+{
+    if (this->m_FileIsEmpty)
+    {
+        cout << "No records exist." << endl;
+    }
+    else
+    {
+        int id = 0;
+        cout << "Please enter the employee ID to update : " << endl;
+        cin >> id;
+
+        int idx = this->isExist(id);
+        if (idx != -1)
+        {
+            delete this->m_pptrArray[idx];
+            
+            int new_id = 0;
+            string new_name = "";
+            int new_depID = 0;
+
+            cout << "Record has been found for id: " << id << endl;
+            cout << "Please enter the employee new id: " << endl;
+            cin >> new_id;
+            cout << "Please enter the employee new name: " << endl;
+            cin >> new_name;
+            cout << "Please select the employee new department: " << endl;
+            cout << "1. Employee. " << endl;
+            cout << "2. Manager. " << endl;
+            cout << "3. Boss.    " << endl;
+            cin >> new_depID;  
+
+            Worker* worker = NULL;
+            switch(new_depID)
+            {
+            case 1:
+                worker = new Employee(new_id, new_name, 1);
+                break;
+            case 2:
+                worker = new Manager(new_id, new_name, 2);
+                break;
+            case 3:
+                worker = new Boss(new_id, new_name, 3);
+                break;
+            default:
+                break; 
+            } 
+            this->m_pptrArray[idx] = worker;
+             
+            cout << "Update  success." << endl;
+            this->save(); 
+        } 
+        else
+        {
+            cout << "Update failed, the employee is not found." << endl;
+        }
+    } 
+    cout << "Press Enter to continue" << endl;
+    cin.ignore(1, '\n');
+    cin.get();
+    system("clear");   
+}
+
+void WorkerManager::find_emp()
+{
+    if (this->m_FileIsEmpty)
+    {
+        cout << "No records exist." << endl;
+    }
+    else
+    {
+         cout << "Select by ID, input 1" << endl;
+         cout << "Select by name, input 2" << endl;
+         int select = 0;
+         cin >> select;
+         
+         if (select == 1)
+         {
+            // by ID
+            int id;
+            cout << "Please input search ID: " << endl;
+            cin >> id;
+            
+            int idx = this->isExist(id);
+
+            if (idx != -1)
+            {
+                cout << "Search success, the info is listed below: " << endl;
+                this->m_pptrArray[idx]->showInfo();  
+            }
+            else
+            {
+                cout << "Search failed" << endl;
+            }
+ 
+         }
+         else if (select ==2)
+         {
+            // by name
+            string name;
+            cout << "Please input search name: " << endl;
+            cin >> name;
+
+            bool flag = false;
+
+            for (int i=0; i<this->m_empNum; i++)
+            {
+                if (this->m_pptrArray[i]->m_Name == name)
+                {
+                    cout << "Search success, the info of employee ID: " << this->m_pptrArray[i]->m_ID
+                    << " listed below: " << endl;
+                    this->m_pptrArray[i]->showInfo();
+                    flag =true;
+                }
+                if (!flag)
+                {
+                    cout << "Search failed" << endl;
+                }
+            }
+         }
+         else
+         {
+            cout << "Invalid input" << endl;
+         }
+    }
+    cout << "Press Enter to continue" << endl;
+    cin.ignore(1, '\n');
+    cin.get();
+    system("clear"); 
+}
+
+void WorkerManager::sort_emp()
+{
+    if (this->m_FileIsEmpty)
+    {
+        cout << "No records exist." << endl;
+        cout << "Press Enter to continue" << endl;
+        cin.ignore(1, '\n');
+        cin.get();
+        system("clear"); 
+    }
+    else
+    {
+        cout << "Sort by ID ascend, input 1" << endl;
+        cout << "Select by ID descend, input 2" << endl;
+        int select = 0;
+        cin >> select;
+
+        for (int i = 0; i < this->m_empNum; i++)
+        {
+            int minormax = i;
+            for (int j = i+1; j < this->m_empNum; j++)
+            {
+                 if (select == 1) //ascend
+                 {
+                    if (this->m_pptrArray[minormax]->m_ID > this->m_pptrArray[j]->m_ID)
+                    {
+                        minormax = j;
+                    }
+                }
+                else //descend  
+                {
+                    if (this->m_pptrArray[minormax]->m_ID < this->m_pptrArray[j]->m_ID)
+                    {
+                        minormax = j;
+                    }
+                } 
+            }
+            if (minormax != i)
+            {
+                 Worker* temp = this->m_pptrArray[i];
+                 this->m_pptrArray[i] = this->m_pptrArray[minormax]; 
+                 this->m_pptrArray[minormax] = temp;
+            }
+        }
+
+        this->save(); 
+        cout << "Sort success, the sorted results: " << endl;
+        this->show_emp(); 
+    }
+}
+
+void WorkerManager::clear_emp()
+{
+    cout << "clear record confirm?" << endl;
+    cout << "1. confirm." << endl;
+    cout << "2. Decline." << endl;
+    int select =  0;
+    cin >> select;
+
+    if (select == 1)
+    {
+        //clear
+        ofstream ofs;
+        ofs.open(FILENAME, ios::trunc); //clear and recreate
+        ofs.close(); 
+
+        if (this->m_pptrArray != NULL)
+        {
+            for (int i = 0; i < this->m_empNum; i++)
+            {
+                delete this->m_pptrArray[i];
+                this->m_pptrArray[i] = NULL; 
+            }
+            delete [] this->m_pptrArray;
+            this->m_pptrArray = NULL;
+            this->m_empNum = 0;
+            this->m_FileIsEmpty = true;
+        }
+        cout << "clear records success, all records deleted." << endl;  
+    }
+    cin.ignore(1, '\n');
+    cin.get();
+    system("clear"); 
+}
+
 WorkerManager::~WorkerManager()
 {
     if (this->m_pptrArray != NULL)
     {
+        for (int i = 0; i < this->m_empNum; i++)
+            {
+                delete this->m_pptrArray[i];
+                this->m_pptrArray[i] = NULL; 
+            }
         delete [] this->m_pptrArray;
         this->m_pptrArray = NULL;
     }
